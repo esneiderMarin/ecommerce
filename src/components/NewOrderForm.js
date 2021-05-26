@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useContext } from "react";
+import { useHistory } from "react-router-dom";
 import melonn from "../apis/melonn";
 import purchases from "../apis/purchases";
 import { OrdersContext } from "../context/OrdersContext";
@@ -20,6 +21,7 @@ export const NewOrderForm = props => {
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [dropdownOptions, setDropdownOptions] = useState();
   const [selected, setSelected] = useState();
+  const history = useHistory();
   //const formData = useRef();
   const [formData, setFormData] = useState({
     sellerStore: "",
@@ -126,6 +128,7 @@ export const NewOrderForm = props => {
           };
           if (res.data.status == "OK") {
             addOrders(orderData);
+            history.push("/orders-list");
           }
         });
     };

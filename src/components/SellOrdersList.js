@@ -1,12 +1,23 @@
 import React, { useContext } from "react";
+import { useHistory } from "react-router-dom";
 import { OrdersContext } from "../context/OrdersContext";
-import { Table, Row, Col } from "reactstrap";
+import { Table, Row, Col, Button } from "reactstrap";
 
 export const SellOrdersList = props => {
   let { orders, addOrders } = useContext(OrdersContext);
+  const history = useHistory();
+
+  const viewOrder = order => {
+    history.push({
+      pathname: `/view-order-details/${order.internalOrderNumber}`,
+      state: { order: order }
+    });
+    //history.push(`/view-order-details/${orderId}`);
+  };
+
   const ordersMap = orders.map(order => {
     return (
-      <tr key={order.internalOrderNumber}>
+      <tr key={order.internalOrderNumber} onClick={() => viewOrder(order)}>
         <th scope="row">{order.internalOrderNumber}</th>
         <td>{order.sellerStore}</td>
         <td>{order.creationDate}</td>
@@ -17,6 +28,9 @@ export const SellOrdersList = props => {
 
   return (
     <div>
+      <Button type="submit" onClick={() => history.push("/create")}>
+        Create Order
+      </Button>
       <Row>
         <Col sm="12" md={{ size: 6, offset: 3 }} className="text-center">
           <h2>Orders</h2>
